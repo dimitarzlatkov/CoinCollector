@@ -1,0 +1,12 @@
+#
+# 
+# A file defining the updates to be executed to update the schema to version 01:
+# Initial creation of the database tables.
+#
+# This file follows the convention introduced in DatabaseHelper.
+#
+
+v_01_create_countries
+v_01_create_coins
+v_01_insert_countries
+v_01_insert_germany_coins
