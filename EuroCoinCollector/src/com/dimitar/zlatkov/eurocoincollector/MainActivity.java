@@ -1,6 +1,10 @@
 package com.dimitar.zlatkov.eurocoincollector;
 
+import java.util.List;
+
+import com.dimitar.zlatkov.eurocoincollector.db.Database;
 import com.dimitar.zlatkov.eurocoincollector.db.DatabaseHelper;
+import com.dimitar.zlatkov.eurocoincollector.db.bean.Country;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -28,17 +32,21 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(MainActivity.this, text.getText().toString(),
-						Toast.LENGTH_LONG).show();
+				Database db = new Database(MainActivity.this);
+				List<Country> allCountries = db.getAllCountries();
+				Toast.makeText(MainActivity.this,
+						allCountries.size()+"", Toast.LENGTH_LONG)
+						.show();
 
 			}
 		});
-		
+
 		DatabaseHelper db = new DatabaseHelper(this);
 		SQLiteDatabase readableDatabase = db.getReadableDatabase();
-		Cursor rawQuery = readableDatabase.rawQuery("Select * from countries", null);
+		Cursor rawQuery = readableDatabase.rawQuery("Select * from countries",
+				null);
 		rawQuery.moveToFirst();
-		
+
 	}
 
 }

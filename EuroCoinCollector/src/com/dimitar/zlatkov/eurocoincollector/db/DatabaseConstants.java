@@ -11,10 +11,13 @@ public class DatabaseConstants {
     public static final String DATABASE_NAME = "eurocoincollector_database";
 
     // Table names
-   
+   public static final String COUNTRIES_TABLE = "countries";
+   public static final String COINS_TABLE = "coins";
 
     // Column names
- 
-   
+   public static final String COUNTRIES_ID_COLUMN = "_id";
+   public static final String COUNTRIES_CODE_COLUMN = "code";
+   public static final String COUNTRIES_NAME_COLUMN = "country_name";
+   public static final String COUNTRIES_FLAG_COLUMN = "country_flag";
 
 }
