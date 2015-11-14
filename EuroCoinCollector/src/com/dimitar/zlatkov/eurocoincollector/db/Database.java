@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.dimitar.zlatkov.eurocoincollector.db.bean.Coin;
 import com.dimitar.zlatkov.eurocoincollector.db.bean.Country;
 
 public class Database {
@@ -16,6 +17,9 @@ public class Database {
 			+ DatabaseConstants.COUNTRIES_CODE_COLUMN + "= ?";
 	private static final String GET_ALL_COUNTRIES = "Select * from "
 			+ DatabaseConstants.COUNTRIES_TABLE;
+	private static final String GET_COINS_BY_COUNTRY = "Select * from "
+			+ DatabaseConstants.COINS_TABLE + " where "
+			+ DatabaseConstants.COINS_COUNTRY_CODE_COLUMN + "=?";
 
 	private DatabaseHelper helper;
 	private Context context;
@@ -59,26 +63,79 @@ public class Database {
 	public List<Country> getAllCountries() {
 		List<Country> result = new ArrayList<Country>();
 		SQLiteDatabase db = helper.getReadableDatabase();
-		Cursor rawQuery = db.rawQuery(GET_ALL_COUNTRIES, null);
-		rawQuery.moveToFirst();
-		while (!rawQuery.isAfterLast()) {
+		Cursor cursor = db.rawQuery(GET_ALL_COUNTRIES, null);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
 			Country country = new Country();
-			String name = rawQuery.getString(rawQuery
+			String name = cursor.getString(cursor
 					.getColumnIndex(DatabaseConstants.COUNTRIES_NAME_COLUMN));
-			String code = rawQuery.getString(rawQuery
+			String code = cursor.getString(cursor
 					.getColumnIndex(DatabaseConstants.COUNTRIES_CODE_COLUMN));
-			int id = rawQuery.getInt(rawQuery
+			int id = cursor.getInt(cursor
 					.getColumnIndex(DatabaseConstants.COUNTRIES_ID_COLUMN));
-			String flag = rawQuery.getString(rawQuery
+			String flag = cursor.getString(cursor
 					.getColumnIndex(DatabaseConstants.COUNTRIES_FLAG_COLUMN));
 			country.setCountryName(name);
 			country.setCountryCode(code);
 			country.setId(id);
 			country.setImageUrl(flag);
 			result.add(country);
-			rawQuery.moveToNext();
-		}
 
+			cursor.moveToNext();
+		}
+		helper.close();
 		return result;
 	}
+
+	public List<Coin> getCoinsByCountry(String contryCode) {
+		List<Coin> result = new ArrayList<Coin>();
+		SQLiteDatabase db = helper.getReadableDatabase();
+
+		String[] args = new String[1];
+		args[0] = contryCode;
+
+		Cursor cursor = db.rawQuery(GET_COINS_BY_COUNTRY, args);
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			Coin coin = new Coin();
+
+			int id = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.COINS_ID_COLUMN));
+			String country_code = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_COUNTRY_CODE_COLUMN));
+			int facial_value = cursor.getInt(cursor.getColumnIndex(DatabaseConstants.COINS_FACIAL_VALUE_COLUMN));
+			double value = cursor.getDouble(cursor.getColumnIndex(DatabaseConstants.COINS_VALUE_COLUMN));
+			String image = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_IMAGE_COLUMN));
+			String description = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_DESCRIPTION_COLUMN));
+			String shape = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_SHAPE_COLUMN));
+			double weight = cursor.getDouble(cursor.getColumnIndex(DatabaseConstants.COINS_WEIGHT_COLUMN));
+			double diameter = cursor.getDouble(cursor.getColumnIndex(DatabaseConstants.COINS_DIAMETER_COLUMN));
+			String thickness = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_THICKNESS_COLUMN));
+			String commemorative = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_COMMEMORATIVE_COLUMN));
+			//?????? commemorative trqbva li da e string?
+			String have_it = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_HAVE_IT_COLUMN));
+			String currency_type = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_CURRENCY_TYPE_COLUMN));
+			String memo = cursor.getString(cursor.getColumnIndex(DatabaseConstants.COINS_MEMO_COLUMN));
+			
+			coin.setId(id);
+			//coin.setCountry(country);
+			coin.setFacialValue(facial_value);
+			coin.setCoinValue(value); //zashto e coinvalue kato navsqkade e samo value
+			coin.setImageUrl(image);
+			coin.setDescription(description);
+			coin.setShape(shape);
+			coin.setWeight(weight);
+			coin.setDiameter(diameter);
+			coin.setThickness(thickness);
+			//coin.setCommemorative(commemorative);
+			//coin.setHaveIt(have_it);
+			coin.setCurrencyType(currency_type);
+			coin.setMemo(memo);
+
+			result.add(coin);
+
+			cursor.moveToNext();
+		}
+		helper.close();
+		return result;
+	}
+
 }

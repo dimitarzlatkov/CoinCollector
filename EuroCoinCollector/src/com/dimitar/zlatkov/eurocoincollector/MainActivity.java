@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dimitar.zlatkov.eurocoincollector.db.Database;
 import com.dimitar.zlatkov.eurocoincollector.db.DatabaseHelper;
+import com.dimitar.zlatkov.eurocoincollector.db.bean.Coin;
 import com.dimitar.zlatkov.eurocoincollector.db.bean.Country;
 
 import android.app.Activity;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -27,7 +29,28 @@ public class MainActivity extends Activity {
 
 		final EditText text = (EditText) findViewById(R.id.text_field_id);
 		Button button = (Button) findViewById(R.id.button_id);
-
+		
+		
+		Database db1 = new Database(MainActivity.this);
+		Country con = db1.getCountryByCode("DE");
+		text.setText(con.getCountryName());
+		
+		List<Country> allCountries1 = db1.getAllCountries();
+		final TextView text1 = (TextView) findViewById(R.id.text_field_id1);
+		
+		text1.setText("Country: "+ "\n");
+		for (int i=0;i<allCountries1.size();i++){
+			text1.append(i +" "+allCountries1.get(i).getCountryCode() +" "+allCountries1.get(i).getCountryName()+"\n");
+		}
+		
+		List<Coin> coins = db1.getCoinsByCountry("DE");
+		final TextView text2 = (TextView) findViewById(R.id.text_field_id2);
+		text2.setText("Coins"+"\n");
+		
+		for (int i=0;i<coins.size();i++){
+			text2.append(i +" "+coins.get(i).getFacialValue() +" "+coins.get(i).getCurrencyType()+"\n");
+		}
+		
 		button.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -37,7 +60,7 @@ public class MainActivity extends Activity {
 				Toast.makeText(MainActivity.this,
 						allCountries.size()+"", Toast.LENGTH_LONG)
 						.show();
-
+				
 			}
 		});
 
