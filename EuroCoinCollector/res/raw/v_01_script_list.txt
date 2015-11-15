@@ -10,3 +10,4 @@ v_01_create_countries
 v_01_create_coins
 v_01_insert_countries
 v_01_insert_germany_coins
+v_01_insert_spain_coins
