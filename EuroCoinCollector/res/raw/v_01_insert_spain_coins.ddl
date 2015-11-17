@@ -19,7 +19,7 @@ INSERT INTO coins (country_code,facial_value,value,image,description,shape,weigh
         UNION ALL SELECT 'ES','2','2.00','es_2_euro','Alhambra','round',8.5,25.75,2.2,'true','Euro'
         UNION ALL SELECT 'ES','2','2.00','es_2_euro','10 Years of Euro Cash','round',8.5,25.75,2.2,'true','Euro'
         UNION ALL SELECT 'ES','2','2.00','es_2_euro','Burgos Cathedral','round',8.5,25.75,2.2,'true','Euro'
-        UNION ALL SELECT 'ES','2','2.00','es_2_euro','Gaudi&apos;s Guell Park','round',8.5,25.75,2.2,'true','Euro'
+        UNION ALL SELECT 'ES','2','2.00','es_2_euro','Gaudis Guell Park','round',8.5,25.75,2.2,'true','Euro'
         UNION ALL SELECT 'ES','2','2.00','es_2_euro','King Felipe VI Accession to Spanish Throne','round',8.5,25.75,2.2,'true','Euro'
         UNION ALL SELECT 'ES','2','2.00','es_2_euro','Cueva de Altamira','round',8.5,25.75,2.2,'true','Euro'
 );

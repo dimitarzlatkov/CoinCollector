@@ -51,13 +51,13 @@ public class MainActivity extends Activity {
 			text2.append(i +" "+coins.get(i).getFacialValue() +" "+coins.get(i).getCurrencyType()+"\n");
 		}
 		
-//		List<Coin> Ccoins = db1.getCommemorativeCoinsByCountry("ES");
-//		final TextView text3 = (TextView) findViewById(R.id.text_field_id3);
-//		text3.setText("Commemorative Coins"+"\n");
-//		
-//		for (int i=0;i<Ccoins.size();i++){
-//			text3.append(i +" "+Ccoins.get(i).getDescription() +"\n");
-//		}
+		List<Coin> Ccoins = db1.getCommemorativeCoinsByCountry("ES",true);
+		final TextView text3 = (TextView) findViewById(R.id.text_field_id3);
+		text3.setText("Commemorative Coins"+"\n");
+		
+		for (int i=0;i<Ccoins.size();i++){
+			text3.append(i +" "+Ccoins.get(i).getDescription() +"\n");
+		}
 		
 		button.setOnClickListener(new OnClickListener() {
 

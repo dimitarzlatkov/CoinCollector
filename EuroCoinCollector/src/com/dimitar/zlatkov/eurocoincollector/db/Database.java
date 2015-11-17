@@ -24,7 +24,7 @@ public class Database {
 			+ DatabaseConstants.COINS_TABLE
 			+ " where "
 			+ DatabaseConstants.COINS_COMMEMORATIVE_COLUMN
-			+ " = true and "
+			+ " = ? and "
 			+ DatabaseConstants.COINS_COUNTRY_CODE_COLUMN + "=?";
 
 	private DatabaseHelper helper;
@@ -96,7 +96,7 @@ public class Database {
 	public List<Coin> getCoinsByCountry(String contryCode) {
 		List<Coin> result = new ArrayList<Coin>();
 		SQLiteDatabase db = helper.getReadableDatabase();
-
+		Country country = getCountryByCode(contryCode);
 		String[] args = new String[1];
 		args[0] = contryCode;
 
@@ -107,9 +107,6 @@ public class Database {
 
 			int id = cursor.getInt(cursor
 					.getColumnIndex(DatabaseConstants.COINS_ID_COLUMN));
-			String country_code = cursor
-					.getString(cursor
-							.getColumnIndex(DatabaseConstants.COINS_COUNTRY_CODE_COLUMN));
 			int facial_value = cursor
 					.getInt(cursor
 							.getColumnIndex(DatabaseConstants.COINS_FACIAL_VALUE_COLUMN));
@@ -128,12 +125,11 @@ public class Database {
 					.getColumnIndex(DatabaseConstants.COINS_DIAMETER_COLUMN));
 			String thickness = cursor.getString(cursor
 					.getColumnIndex(DatabaseConstants.COINS_THICKNESS_COLUMN));
-			String commemorative = cursor
-					.getString(cursor
-							.getColumnIndex(DatabaseConstants.COINS_COMMEMORATIVE_COLUMN));
-			// ?????? commemorative trqbva li da e string?
-			String have_it = cursor.getString(cursor
-					.getColumnIndex(DatabaseConstants.COINS_HAVE_IT_COLUMN));
+			boolean commemorative = cursor
+					.getInt(cursor
+							.getColumnIndex(DatabaseConstants.COINS_COMMEMORATIVE_COLUMN))>0;
+			boolean have_it = cursor.getInt(cursor
+					.getColumnIndex(DatabaseConstants.COINS_HAVE_IT_COLUMN))>0;
 			String currency_type = cursor
 					.getString(cursor
 							.getColumnIndex(DatabaseConstants.COINS_CURRENCY_TYPE_COLUMN));
@@ -141,18 +137,17 @@ public class Database {
 					.getColumnIndex(DatabaseConstants.COINS_MEMO_COLUMN));
 
 			coin.setId(id);
-			// coin.setCountry(country);
+			coin.setCountry(country);
 			coin.setFacialValue(facial_value);
-			coin.setCoinValue(value); // zashto e coinvalue kato navsqkade e
-										// samo value
+			coin.setCoinValue(value);
 			coin.setImageUrl(image);
 			coin.setDescription(description);
 			coin.setShape(shape);
 			coin.setWeight(weight);
 			coin.setDiameter(diameter);
 			coin.setThickness(thickness);
-			// coin.setCommemorative(commemorative);
-			// coin.setHaveIt(have_it);
+			coin.setCommemorative(commemorative);
+			coin.setHaveIt(have_it);
 			coin.setCurrencyType(currency_type);
 			coin.setMemo(memo);
 
@@ -164,12 +159,14 @@ public class Database {
 		return result;
 	}
 
-	public List<Coin> getCommemorativeCoinsByCountry(String contryCode) {
+	public List<Coin> getCommemorativeCoinsByCountry(String contryCode, boolean isCommemorative) {
 		List<Coin> result = new ArrayList<Coin>();
 		SQLiteDatabase db = helper.getReadableDatabase();
-
-		String[] args = new String[1];
-		args[0] = contryCode;
+		Country country = getCountryByCode(contryCode);
+		
+		String[] args = new String[2];
+		args[0] = isCommemorative+"";
+		args[1] = contryCode;
 
 		Cursor cursor = db.rawQuery(GET_COMMEMORATIVE_COINS_BY_COUNTRY, args);
 		cursor.moveToFirst();
@@ -178,9 +175,6 @@ public class Database {
 
 			int id = cursor.getInt(cursor
 					.getColumnIndex(DatabaseConstants.COINS_ID_COLUMN));
-			String country_code = cursor
-					.getString(cursor
-							.getColumnIndex(DatabaseConstants.COINS_COUNTRY_CODE_COLUMN));
 			int facial_value = cursor
 					.getInt(cursor
 							.getColumnIndex(DatabaseConstants.COINS_FACIAL_VALUE_COLUMN));
@@ -199,12 +193,11 @@ public class Database {
 					.getColumnIndex(DatabaseConstants.COINS_DIAMETER_COLUMN));
 			String thickness = cursor.getString(cursor
 					.getColumnIndex(DatabaseConstants.COINS_THICKNESS_COLUMN));
-			String commemorative = cursor
-					.getString(cursor
-							.getColumnIndex(DatabaseConstants.COINS_COMMEMORATIVE_COLUMN));
-			// ?????? commemorative trqbva li da e string?
-			String have_it = cursor.getString(cursor
-					.getColumnIndex(DatabaseConstants.COINS_HAVE_IT_COLUMN));
+			boolean commemorative = cursor
+					.getInt(cursor
+							.getColumnIndex(DatabaseConstants.COINS_COMMEMORATIVE_COLUMN))>0;
+			boolean have_it = cursor.getInt(cursor
+					.getColumnIndex(DatabaseConstants.COINS_HAVE_IT_COLUMN))>0;
 			String currency_type = cursor
 					.getString(cursor
 							.getColumnIndex(DatabaseConstants.COINS_CURRENCY_TYPE_COLUMN));
@@ -212,18 +205,17 @@ public class Database {
 					.getColumnIndex(DatabaseConstants.COINS_MEMO_COLUMN));
 
 			coin.setId(id);
-			// coin.setCountry(country);
+			coin.setCountry(country);
 			coin.setFacialValue(facial_value);
-			coin.setCoinValue(value); // zashto e coinvalue kato navsqkade e
-										// samo value
+			coin.setCoinValue(value);
 			coin.setImageUrl(image);
 			coin.setDescription(description);
 			coin.setShape(shape);
 			coin.setWeight(weight);
 			coin.setDiameter(diameter);
 			coin.setThickness(thickness);
-			// coin.setCommemorative(commemorative);
-			// coin.setHaveIt(have_it);
+			coin.setCommemorative(commemorative);
+			coin.setHaveIt(have_it);
 			coin.setCurrencyType(currency_type);
 			coin.setMemo(memo);
 
